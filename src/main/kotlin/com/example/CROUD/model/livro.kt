@@ -11,13 +11,8 @@ data class Livro (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long=0,
-    val titulo: String,
-    val categoria: String
-
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "categoria_id")
-//    lateinit var categoria: Categoria
+    var titulo: String,
+    var categoria: String
 
 
 
