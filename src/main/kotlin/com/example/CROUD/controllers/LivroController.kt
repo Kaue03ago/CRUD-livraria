@@ -27,9 +27,7 @@ class LivroController (private val livroService: LivroService) {
     @DeleteMapping("/deletarTodos")
     fun removerTodosLivros(): ResponseEntity<Void>{
 
-        if(livroService.listarTodosLivros().isEmpty()){ //vazio
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        }
+
 
         livroService.removerTodosLivros()
         return ResponseEntity(HttpStatus.OK)
@@ -64,6 +62,7 @@ class LivroController (private val livroService: LivroService) {
 
     @PutMapping("/editar/{id}")
     fun editarLivro(@PathVariable id: Long, @RequestBody livro: Livro): ResponseEntity<Livro>{
+
     val livroEditado = livroService.editarLivro(id, livro)
         return if (livroEditado != null){
             ResponseEntity.ok(livroEditado)
