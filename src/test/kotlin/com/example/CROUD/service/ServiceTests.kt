@@ -1,8 +1,7 @@
-package com.example.CROUD.controller
+package com.example.CROUD.service
 
 import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
-import com.example.CROUD.service.LivroService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
