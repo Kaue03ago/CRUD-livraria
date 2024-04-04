@@ -10,7 +10,7 @@ data class Livro (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long=0,
+    val id: Long?,
     var titulo: String,
     var categoria: String
 
