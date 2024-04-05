@@ -61,23 +61,24 @@ class LivroService(private val livroRepository: LivroRepository){
     }
 
     fun listarLivro(id: Long): Livro{
+
         return livroRepository.findById(id).orElseThrow { NoSuchElementException("Livro não encontrado") }
     }
 
     fun editarLivro(id: Long, livro: Livro): Livro? {
 
+
+
         val livroAux: Optional<Livro> = livroRepository.findById(id)
-            if(livroAux.isEmpty){
+        if(livroAux.isEmpty){
                 return null
-            }
-            var livroExistente = livroAux.get( )
-            livroExistente.titulo = livroExistente.titulo.lowercase()
+        }
+        var livroExistente = livroAux.get( )
+        livroExistente.titulo = livroExistente.titulo.lowercase()
 
         if(livroRepository.existsByTitulo(livro.titulo)){
             throw IllegalArgumentException("Titulo repetido")
         }
-
-
         if (livro.titulo.isBlank() && livro.categoria.isBlank()){
             throw NoSuchElementException("Ambos os campos não podem ser vazios")
         }
@@ -86,10 +87,7 @@ class LivroService(private val livroRepository: LivroRepository){
         }
         if(livro.categoria.isBlank()){
             livroExistente.titulo = livro.titulo
-
         }
-//            livroExistente.titulo = livro.titulo
-//            livroExistente.categoria = livro.categoria
             livroRepository.save(livroExistente)
             return livroExistente
 
