@@ -28,10 +28,17 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.h2database:h2:2.2.222")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("io.mockk:mockk:1.12.0")
+
 	//runtimeOnly("org.postgresql:postgresql")
 //	runtimeOnly("com.h2database:h2")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test:6.2.3")
+
+
 }
+
 
 
 tasks.withType<KotlinCompile> {
