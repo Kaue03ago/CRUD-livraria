@@ -1,8 +1,9 @@
-package com.example.CROUD.controllers
+package com.example.CROUD.controllers.LivroController
 
 import com.example.CROUD.model.Livro
 import com.example.CROUD.service.LivroService
 import org.junit.jupiter.api.Test
+import org.mockito.InjectMocks
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -34,9 +35,25 @@ class ControllerTest {
     @MockBean
     private lateinit var livroService: LivroService
 
+//    @InjectMocks
+//    private lateinit var livroController: LivroController
+
+    @InjectMocks
+    private var id : Long = 100L
+
+    @InjectMocks
+    private var titulo : String = "livro de teste"
+
+    @InjectMocks
+    private var categoria : String = "comedia"
+
+    //@InjectMocks
+   private lateinit var livroAux: Livro//esta eh a forma correta ?
+
+
     @Test
     fun `inserir livro corretamente`(){
-        val livroAux =Livro(id = 1L, titulo = "livro de teste", categoria = "comedia")
+         livroAux =Livro(id, titulo, categoria)
 
 
 
@@ -45,18 +62,19 @@ class ControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/livraria/inserir")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": 1, "titulo": "livro de teste", "categoria": "comedia"}""")
+                .content("""{"id": $id, "titulo": "$titulo", "categoria": "$categoria"}""")
+
         )
             .andExpect (MockMvcResultMatchers.status().isCreated)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.titulo").value("livro de teste"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value("comedia"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.titulo").value(titulo))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value(categoria))
 
     }
 
     @Test
-    fun `inserir livro incorretamnete `(){
-        val livroAux =Livro(id = 1L, categoria = "comedia")
+    fun `inserir livro incorretamente `(){
+        livroAux =Livro(id, titulo, categoria)
 
 
         `when`(livroService.inserirLivro(livroAux)).thenReturn(livroAux)
@@ -64,14 +82,11 @@ class ControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/livraria/inserir")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": 1, "categoria": "comedia" }""")
+                .content("""{"id": $id, "titulo: "", categoria": "$categoria" }""")
         )
-            .andExpect(MockMvcResultMatchers.status().isInternalServerError)
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)//realmente deveria retornar bad request?
 
     }
 
-//    fun creatLivro(id: Long = 1L,                         NAO FUNFOU
-//                     titulo: String = "Teste titulo",
-//                     categoria: String = "Teste categoria") =Livro( id =id, titulo = titulo, categoria)
-//
+
 }

@@ -143,7 +143,6 @@ class ServiceTests {
         val id = 100L
         val livroAux: Livro = Livro(id = id, titulo = "teste id livro", categoria = "bbbb")
 
-//        `when`(livroRepository.existsById(id)).thenReturn(true)
         `when`(livroRepository.findById(id)).thenReturn(Optional.of(livroAux))// procura aux livro
 
         val livroResultante = livroService.listarLivro(id)// testa a fun
@@ -161,64 +160,4 @@ class ServiceTests {
         assertThrows<NoSuchElementException> {livroService.listarLivro(id)  }
 
     }
-
-
-
-
-
-
-//    @Test
-//    fun `editar livro corretamente`(){
-//        val id = 100L
-//        val livroAux: Livro = Livro(id = id, titulo = "sem", categoria = "dddd")
-//        val livroEditado: Livro = Livro(id = id, titulo = "sem", categoria = "aaase")
-//
-//
-//
-//      livroService.editarLivro(id, livroEditado)
-//
-//        when {
-//            // título e categoria ==
-//            (livroAux.titulo == livroEditado.titulo) && (livroAux.categoria == livroEditado.categoria) -> {
-//            }
-//                        //  título foi alterado
-//            (livroAux.titulo != livroEditado.titulo) && (livroAux.categoria == livroEditado.categoria) -> {//
-//                if (!livroRepository.existsByTitulo(livroEditado.titulo)) {
-//                    livroAux.titulo = livroEditado.titulo
-//                } else {
-//                    throw IllegalArgumentException("Título repetido")
-//                }
-//            }
-//            //Categoria foi alterada
-//            (livroAux.titulo == livroEditado.titulo) && (livroAux.categoria != livroEditado.categoria) -> {
-//                livroAux.categoria = livroEditado.categoria
-//            }
-//            //título e categoria foram alterados, usando flag pra facilitar -> tituloalterado
-//            else -> {
-//                var tituloAlterado = false
-//                if (!livroRepository.existsByTitulo(livroEditado.titulo)) {
-//                    livroAux.titulo = livroEditado.titulo
-//                    tituloAlterado = true
-//                } else {
-//                    throw IllegalArgumentException("Título repetido")
-//                }
-//                if (tituloAlterado) {
-//                    livroAux.categoria = livroEditado.categoria
-//                }
-//            }
-//        }
-//
-//        livroRepository.save(livroAux)
-//
-//
-//
-//            println("\n\n\n\n\n\n")
-//            println(livroAux.titulo)
-//            println(livroAux.categoria)
-//            //return livroAux
-//
-//
-//
-//
-//    }
 }
