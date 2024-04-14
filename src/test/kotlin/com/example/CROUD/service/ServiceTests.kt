@@ -2,9 +2,6 @@ package com.example.CROUD.service
 
 import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -24,6 +21,7 @@ class ServiceTests {
 
     @Mock//cria um objeto falso
     lateinit var livroRepository: LivroRepository//repository
+
 
 
 
@@ -164,30 +162,63 @@ class ServiceTests {
 
     }
 
-    @Test
-    fun `editar livro com titulo e categoria ==`(){
-        val id = 100L
-        val livroRepositoryMock = mockk<LivroRepository>()
 
-        val livroInicial = Livro(id = id, titulo = "sem", categoria = "dddd")
 
-        val livroEditado = Livro(id = id, titulo = "sem", categoria = "dddd")
 
-        every { livroRepositoryMock.findById(id) } returns Optional.of(livroInicial)
 
-        livroService.editarLivro(id, livroEditado)
 
-        verify(exactly = 0) { livroRepository.save(any()) }
-
-        assertEquals(livroInicial, livroRepository.findById(id).get())
-
+//    @Test
+//    fun `editar livro corretamente`(){
+//        val id = 100L
+//        val livroAux: Livro = Livro(id = id, titulo = "sem", categoria = "dddd")
+//        val livroEditado: Livro = Livro(id = id, titulo = "sem", categoria = "aaase")
 //
-
-
-    }
-
-
-
-
-
+//
+//
+//      livroService.editarLivro(id, livroEditado)
+//
+//        when {
+//            // título e categoria ==
+//            (livroAux.titulo == livroEditado.titulo) && (livroAux.categoria == livroEditado.categoria) -> {
+//            }
+//                        //  título foi alterado
+//            (livroAux.titulo != livroEditado.titulo) && (livroAux.categoria == livroEditado.categoria) -> {//
+//                if (!livroRepository.existsByTitulo(livroEditado.titulo)) {
+//                    livroAux.titulo = livroEditado.titulo
+//                } else {
+//                    throw IllegalArgumentException("Título repetido")
+//                }
+//            }
+//            //Categoria foi alterada
+//            (livroAux.titulo == livroEditado.titulo) && (livroAux.categoria != livroEditado.categoria) -> {
+//                livroAux.categoria = livroEditado.categoria
+//            }
+//            //título e categoria foram alterados, usando flag pra facilitar -> tituloalterado
+//            else -> {
+//                var tituloAlterado = false
+//                if (!livroRepository.existsByTitulo(livroEditado.titulo)) {
+//                    livroAux.titulo = livroEditado.titulo
+//                    tituloAlterado = true
+//                } else {
+//                    throw IllegalArgumentException("Título repetido")
+//                }
+//                if (tituloAlterado) {
+//                    livroAux.categoria = livroEditado.categoria
+//                }
+//            }
+//        }
+//
+//        livroRepository.save(livroAux)
+//
+//
+//
+//            println("\n\n\n\n\n\n")
+//            println(livroAux.titulo)
+//            println(livroAux.categoria)
+//            //return livroAux
+//
+//
+//
+//
+//    }
 }

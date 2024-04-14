@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 
 
+
+
 class ControllerTest {
 
     @Autowired
@@ -34,7 +36,7 @@ class ControllerTest {
 
     @Test
     fun `inserir livro corretamente`(){
-        val livroAux =Livro(id = 1L, titulo = "Livro de Teste", categoria = "Ficção")
+        val livroAux =Livro(id = 1L, titulo = "livro de teste", categoria = "comedia")
 
 
 
@@ -43,9 +45,28 @@ class ControllerTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/livraria/inserir")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": 1, "titulo": "Livro de Teste", "categoria": "Ficção"}""")
+                .content("""{"id": 1, "titulo": "livro de teste", "categoria": "comedia"}""")
         )
             .andExpect (MockMvcResultMatchers.status().isCreated)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.titulo").value("livro de teste"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value("comedia"))
+
+    }
+
+    @Test
+    fun `inserir livro incorretamnete `(){
+        val livroAux =Livro(id = 1L, categoria = "comedia")
+
+
+        `when`(livroService.inserirLivro(livroAux)).thenReturn(livroAux)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/livraria/inserir")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""{"id": 1, "categoria": "comedia" }""")
+        )
+            .andExpect(MockMvcResultMatchers.status().isInternalServerError)
 
     }
 
