@@ -2,9 +2,12 @@ package com.example.CROUD.controllers
 
 import com.example.CROUD.model.Livro
 import com.example.CROUD.service.LivroService
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.getForEntity
 
 
 @RestController
@@ -57,24 +60,28 @@ class LivroController(private val livroService: LivroService) {
         return ResponseEntity.ok(auxlivro)
     }
 
-//
-//    @GetMapping("/listarLivroNome/{titulo}")
-//    fun listarLivroNome(@PathVariable titulo: String): ResponseEntity<String>
-//    = runBlocking{
-//
-//
-//        val url = "https://openlibrary.org/search.json?q=${titulo.replace("", "+")}"
-//
-//        val (_,_,result) = url.httpGet().responseString()
-//
-//        return when(result){
-//        is com.github.kittinunf.result.Result.Failure -> ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-//        is com.github.kittinunf.result.Result.Success -> {
-//            // Retornando a resposta da requisição como está
-//            val responseBody = result.value
-//            ResponseEntity.ok(responseBody)}
-//}
-//    }
+
+    @GetMapping("/listarLivroNome/{titulo}")
+    fun listarLivroNome(@PathVariable titulo: String): ResponseEntity<*>{
+        val restTemplate = RestTemplate()
+        val url = restTemplate.getForEntity<String>("https://openlibrary.org/search.json?q=${titulo.replace(" ", "+")}")
+
+        // Faz o parse do json retornado pela api usando o jackson
+        val objectMapper = ObjectMapper()
+        val response = objectMapper.readTree(url.body)
+
+//        // Extrai os títulos dos livros do JSON
+//        val livros = response["docs"].map {
+//            Livro2(
+//                titulo = it["title"].asText(),
+//                autor = it["author_name"].map { autor -> autor.asText() }
+//            )
+//        }
+
+
+        return ResponseEntity.ok(url.body)
+
+    }
 
     @PutMapping("/editar/{id}")
     fun editarLivro(@PathVariable id: Long, @RequestBody livro: Livro): ResponseEntity<Livro> {

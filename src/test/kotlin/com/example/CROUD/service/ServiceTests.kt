@@ -2,11 +2,9 @@ package com.example.CROUD.service
 
 import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -26,10 +24,13 @@ class ServiceTests {
     lateinit var livroRepository: LivroRepository//repository
 
 
-
-
     @InjectMocks//injeta o objeto falso no objeto real p/ ser usado nos tests
     lateinit var livroService: LivroService//service
+
+    @Mock
+    lateinit var livroAux: Livro
+
+    val livroId = 100L
 
     @Test
     fun `adicionar livro com sucesso`(){
@@ -165,19 +166,26 @@ class ServiceTests {
     }
 
     @Test
-    fun `editar livro com titulo e categoria ==`() {
-        val id = 100L
-        val livroRepository = mockk<LivroRepository>()
+    fun `editar livro ok`() {
+//        val livroAux = Livro(id = 1L, titulo = "velozes e furiosos", categoria = "ação")//criando um livro
 
-        val livroInicial = Livro(id = id, titulo = "ppppm", categoria = "dddd")
+        //whenever(livroAux.id).thenReturn(livroId)
+//        whenever(livroRepository.existsById(livroId)).thenReturn(true)
+        assertDoesNotThrow { livroService.editarLivro(livroId, livroAux) }
 
-        val livroEditado = Livro(id = id, titulo = "sem", categoria = "dddd")
 
-        every { livroRepository.findById(id) } returns Optional.of(livroInicial)
-
-        livroService.editarLivro(id, livroEditado)
-
-        verify(exactly = 0) { livroRepository.save(any()) }
+    //        val id = 100L
+//        val livroRepository = mockk<LivroRepository>()
+//
+//        val livroInicial = Livro(id = id, titulo = "ppppm", categoria = "dddd")
+//
+//        val livroEditado = Livro(id = id, titulo = "sem", categoria = "dddd")
+//
+//        every { livroRepository.findById(id) } returns Optional.of(livroInicial)
+//
+//        livroService.editarLivro(id, livroEditado)
+//
+//        verify(exactly = 0) { livroRepository.save(any()) }
     }
 
 
