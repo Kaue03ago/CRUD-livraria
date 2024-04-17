@@ -6,11 +6,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+
 @RestController
 @RequestMapping("/livraria")
 
 
-class LivroController (private val livroService: LivroService) {
+class LivroController(private val livroService: LivroService) {
 
 
     @PostMapping("/inserir")
@@ -20,61 +21,67 @@ class LivroController (private val livroService: LivroService) {
     }
 
     @DeleteMapping("/deletar/{id}")
-    fun removerLivro(@PathVariable id: Long): ResponseEntity<Void>{
+    fun removerLivro(@PathVariable id: Long): ResponseEntity<Void> {
         livroService.removerLivro(id)
         return ResponseEntity(HttpStatus.OK)
     }
+
     @DeleteMapping("/deletarTodos")
-    fun removerTodosLivros(): ResponseEntity<Void>{
-
-
-
+    fun removerTodosLivros(): ResponseEntity<Void> {
         livroService.removerTodosLivros()
         return ResponseEntity(HttpStatus.OK)
     }
 
     @DeleteMapping("/deletarCategoria/{categoria}")
-    fun removerCategoria(@PathVariable categoria: String): ResponseEntity<Void>{
+    fun removerCategoria(@PathVariable categoria: String): ResponseEntity<Void> {
 //        if (livroService.listarTodosLivros().isEmpty()){
 //            return ResponseEntity(HttpStatus.NOT_FOUND)
 //        }
-
         livroService.removerCategoria(categoria)
         return ResponseEntity(HttpStatus.OK)
     }
 
 
     @GetMapping("/listarTodosLivros")
-    fun listarTodosLivros(): ResponseEntity<List<Livro>>{
-    if(livroService.listarTodosLivros().isEmpty()){
-        return ResponseEntity(HttpStatus.NO_CONTENT)
-    }
-    return ResponseEntity(livroService.listarTodosLivros(), HttpStatus.OK)
+    fun listarTodosLivros(): ResponseEntity<List<Livro>> {
+        if (livroService.listarTodosLivros().isEmpty()) {
+            return ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+        return ResponseEntity(livroService.listarTodosLivros(), HttpStatus.OK)
     }
 
     @GetMapping("/listarLivro/{id}")
-    fun listarLivro(@PathVariable id: Long): ResponseEntity<Livro>{
+    fun listarLivro(@PathVariable id: Long): ResponseEntity<Livro> {
 //        livroService.listarLivro(id)
         val auxlivro = livroService.listarLivro(id)
         return ResponseEntity.ok(auxlivro)
-
     }
+
+//
+//    @GetMapping("/listarLivroNome/{titulo}")
+//    fun listarLivroNome(@PathVariable titulo: String): ResponseEntity<String>
+//    = runBlocking{
+//
+//
+//        val url = "https://openlibrary.org/search.json?q=${titulo.replace("", "+")}"
+//
+//        val (_,_,result) = url.httpGet().responseString()
+//
+//        return when(result){
+//        is com.github.kittinunf.result.Result.Failure -> ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+//        is com.github.kittinunf.result.Result.Success -> {
+//            // Retornando a resposta da requisição como está
+//            val responseBody = result.value
+//            ResponseEntity.ok(responseBody)}
+//}
+//    }
 
     @PutMapping("/editar/{id}")
-    fun editarLivro(@PathVariable id: Long, @RequestBody livro: Livro): ResponseEntity<Livro>{
-
-    val livroEditado = livroService.editarLivro(id, livro)
-        return if (livroEditado != null){
+    fun editarLivro(@PathVariable id: Long, @RequestBody livro: Livro): ResponseEntity<Livro> {
+        val livroEditado = livroService.editarLivro(id, livro)
+        return if (livroEditado != null) {
             ResponseEntity.ok(livroEditado)
-            }else
-                ResponseEntity.notFound().build()
+        } else
+            ResponseEntity.notFound().build()
     }
-
-
-
-
-
-
-
-
 }

@@ -2,6 +2,9 @@ package com.example.CROUD.service
 
 import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -160,4 +163,22 @@ class ServiceTests {
         assertThrows<NoSuchElementException> {livroService.listarLivro(id)  }
 
     }
+
+    @Test
+    fun `editar livro com titulo e categoria ==`() {
+        val id = 100L
+        val livroRepository = mockk<LivroRepository>()
+
+        val livroInicial = Livro(id = id, titulo = "ppppm", categoria = "dddd")
+
+        val livroEditado = Livro(id = id, titulo = "sem", categoria = "dddd")
+
+        every { livroRepository.findById(id) } returns Optional.of(livroInicial)
+
+        livroService.editarLivro(id, livroEditado)
+
+        verify(exactly = 0) { livroRepository.save(any()) }
+    }
+
+
 }

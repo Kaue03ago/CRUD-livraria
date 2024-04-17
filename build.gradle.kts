@@ -33,6 +33,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test:6.2.3")
 	implementation("io.mockk:mockk:1.12.0")
+//	implementation("com.github.kittinunf.fuel:fuel:<2.4.1>")
+	implementation("com.github.kittinunf.fuel:fuel:3.0.0-alpha1")
 
 }
 
