@@ -1,5 +1,6 @@
 package com.example.CROUD.controllers
 
+import com.example.CROUD.model.DTO.livroDTO
 import com.example.CROUD.model.Livro
 import com.example.CROUD.service.LivroService
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -15,12 +16,12 @@ import org.springframework.web.client.getForEntity
 
 
 class LivroController(private val livroService: LivroService) {
-
+// poderia ter instaciado o liroservice em escopo global, assim utilizando em todos os metodos
+    //evitando duplicação de código
 
     @PostMapping("/inserir")
-    fun inserirLivro(@RequestBody livro: Livro): ResponseEntity<Livro> {//
-        val livroInserido = livroService.inserirLivro(livro)//inserirLivro(livro)
-        return ResponseEntity(livroInserido, HttpStatus.CREATED)
+    fun inserirLivro(@RequestBody livro: livroDTO): ResponseEntity<Livro> {//
+        return ResponseEntity(livroService.inserirLivro(livro), HttpStatus.CREATED)
     }
 
     @DeleteMapping("/deletar/{id}")
@@ -35,14 +36,11 @@ class LivroController(private val livroService: LivroService) {
         return ResponseEntity(HttpStatus.OK)
     }
 
-    @DeleteMapping("/deletarCategoria/{categoria}")
-    fun removerCategoria(@PathVariable categoria: String): ResponseEntity<Void> {
-//        if (livroService.listarTodosLivros().isEmpty()){
-//            return ResponseEntity(HttpStatus.NOT_FOUND)
-//        }
-        livroService.removerCategoria(categoria)
-        return ResponseEntity(HttpStatus.OK)
-    }
+//    @DeleteMapping("/deletarCategoria/{categoria}")
+//    fun removerCategoria(@PathVariable categoria: String): ResponseEntity<Void> {
+//        livroService.removerCategoria(categoria)
+//        return ResponseEntity(HttpStatus.OK)
+//    }
 
 
     @GetMapping("/listarTodosLivros")
@@ -55,9 +53,7 @@ class LivroController(private val livroService: LivroService) {
 
     @GetMapping("/listarLivro/{id}")
     fun listarLivro(@PathVariable id: Long): ResponseEntity<Livro> {
-//        livroService.listarLivro(id)
-        val auxlivro = livroService.listarLivro(id)
-        return ResponseEntity.ok(auxlivro)
+        return ResponseEntity.ok(livroService.listarLivro(id))
     }
 
 
@@ -69,6 +65,22 @@ class LivroController(private val livroService: LivroService) {
         // Faz o parse do json retornado pela api usando o jackson
         val objectMapper = ObjectMapper()
         val response = objectMapper.readTree(url.body)
+
+
+
+        if (response != null && response.has("docs")) {
+            val docs = response["docs"]
+            if (docs.isArray && docs.size() > 0) {
+                val firstDoc = docs[0]
+                if (firstDoc.has("author_name")) {
+                    val authors = firstDoc["author_name"]
+                    if (authors.isArray && authors.size() > 0) {
+                        val author = authors[0].asText()
+                        return ResponseEntity.ok(author)
+                    }
+                }
+            }
+        }
 
 //        // Extrai os títulos dos livros do JSON
 //        val livros = response["docs"].map {

@@ -20,10 +20,15 @@ data class Livro(
     @field: Size(min = 3, max = 75)
     var titulo: String,
 
+//    @field: NotBlank
+//    @field: NotNull
+//    @field: Size(min = 20, max = 200)
+    var descricao: String,
+
     @field: NotBlank
     @field: NotNull
-    @field: Size(min = 3)
-    var categoria: String
+    @field: Size(min = 3, max = 75)
+    var autor: String
 
 
 

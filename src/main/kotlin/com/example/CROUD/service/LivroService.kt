@@ -1,5 +1,8 @@
 package com.example.CROUD.service
 
+import com.example.CROUD.cliente.OpenLibraryClient
+import com.example.CROUD.factory.LivroModelFactory
+import com.example.CROUD.model.DTO.livroDTO
 import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
 import jakarta.validation.Valid
@@ -8,15 +11,24 @@ import java.util.*
 
 
 @Service
-class LivroService(@Valid private val livroRepository: LivroRepository){
+class LivroService(@Valid
+                   private val livroRepository: LivroRepository,
+                   val openLibraryClient: OpenLibraryClient,
+                   val livroModelFactory: LivroModelFactory
+){
 
-    fun inserirLivro(livro: Livro): Livro {
-        livro.titulo = livro.titulo.lowercase()//transforma o titulo SEMPRE em minusculo
+    fun inserirLivro(livro: livroDTO): Livro {
+//        livro.titulo = livro.titulo.lowercase()//transforma o titulo SEMPRE em minusculo
         if (livroRepository.existsByTitulo(livro.titulo)){
             throw IllegalArgumentException("Livro já cadastrado")
         }
-        return livroRepository.save(livro)//save é um método do JpaRepository q salva
-        // o objeto no banco de dados
+
+
+        val livroApiExterna = openLibraryClient.searchBooks(livro.titulo)//busca o livro na api externa
+        val livroApiInterna = livroModelFactory.createInstance(livroApiExterna)//cria um livro com os dados da api externa
+
+        return livroRepository.save(livroApiInterna)
+
     }
     fun removerLivro(id: Long){
         if (!livroRepository.existsById(id)) {
@@ -32,9 +44,9 @@ class LivroService(@Valid private val livroRepository: LivroRepository){
         return livroRepository.deleteAll()
     }
 
-    fun removerCategoria(categoria: String){
-        return livroRepository.deleteByCategoria(categoria)
-    }
+//    fun removerCategoria(categoria: String){
+//        return livroRepository.deleteByCategoria(categoria)
+//    }
 
     fun listarTodosLivros(): List<Livro>{
         if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
@@ -59,13 +71,13 @@ class LivroService(@Valid private val livroRepository: LivroRepository){
         if(livroRepository.existsByTitulo(livro.titulo)){
             throw IllegalArgumentException("Titulo repetido")
         }
-        if (livro.titulo.isBlank() && livro.categoria.isBlank()){
+        if (livro.titulo.isBlank() && livro.descricao.isBlank()){
             throw NoSuchElementException("Ambos os campos não podem ser vazios")
         }
         if(livro.titulo.isBlank()){
-            livroExistente.categoria = livro.categoria
+            livroExistente.descricao = livro.descricao
         }
-        if(livro.categoria.isBlank()){
+        if(livro.descricao.isBlank()){
             livroExistente.titulo = livro.titulo
         }
             livroRepository.save(livroExistente)
