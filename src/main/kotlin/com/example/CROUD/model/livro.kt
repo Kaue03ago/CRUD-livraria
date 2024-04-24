@@ -27,9 +27,9 @@ data class Livro(
 //    @field: NotBlank
 //    @field: NotNull
 //    @field: Size(min = 3, max = 75)
-    @Column
-    var autor: List<String>
+//    @Column
 
-
-
+    @OneToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "livro_id")
+    var autores: List<Autor>
 )

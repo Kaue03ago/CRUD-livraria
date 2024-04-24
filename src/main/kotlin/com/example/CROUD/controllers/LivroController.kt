@@ -4,6 +4,7 @@ import com.example.CROUD.model.DTO.livroDTO
 import com.example.CROUD.model.Livro
 import com.example.CROUD.service.LivroService
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -20,7 +21,7 @@ class LivroController(private val livroService: LivroService) {
     //evitando duplicação de código
 
     @PostMapping("/inserir")
-    fun inserirLivro(@RequestBody livro: livroDTO): ResponseEntity<Livro> {//
+    fun inserirLivro(@RequestBody @Valid livro: livroDTO): ResponseEntity<Livro> {//
         return ResponseEntity(livroService.inserirLivro(livro), HttpStatus.CREATED)
     }
 
