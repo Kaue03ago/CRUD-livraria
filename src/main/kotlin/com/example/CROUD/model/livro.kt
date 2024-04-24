@@ -1,14 +1,11 @@
 package com.example.CROUD.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
-@Entity
+@Entity(name = "livro")
 data class Livro(
 
     @Id
@@ -18,17 +15,20 @@ data class Livro(
     @field: NotBlank
     @field: NotNull
     @field: Size(min = 3, max = 75)
+    @Column
     var titulo: String,
 
 //    @field: NotBlank
 //    @field: NotNull
 //    @field: Size(min = 20, max = 200)
+    @Column
     var descricao: String,
 
-    @field: NotBlank
-    @field: NotNull
-    @field: Size(min = 3, max = 75)
-    var autor: String
+//    @field: NotBlank
+//    @field: NotNull
+//    @field: Size(min = 3, max = 75)
+    @Column
+    var autor: List<String>
 
 
 

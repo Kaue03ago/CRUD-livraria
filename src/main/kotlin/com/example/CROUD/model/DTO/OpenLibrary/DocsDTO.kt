@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class DocsDTO (
     var title: Any? = null,
     var subtitle: Any? = null,
-    @JsonProperty("author_name")
+    @JsonProperty("author_alternative_name")
     var author: List<String>? = null
 )
