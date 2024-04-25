@@ -7,7 +7,6 @@ import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
 import jakarta.validation.Valid
 import org.springframework.stereotype.Service
-import java.util.*
 
 
 @Service
@@ -59,27 +58,23 @@ class LivroService(@Valid
     }
 
     fun editarLivro(id: Long, livro: Livro): Livro? {
+        val livroExistente: Livro = livroRepository.findById(id).orElse(null) ?: return null
 
-        val livroAux: Optional<Livro> = livroRepository.findById(id)
-        if(livroAux.isEmpty){
-                return null
+        if (livroRepository.existsByTituloAndIdNot(livro.titulo, id)) {
+            throw IllegalArgumentException("Título repetido")
         }
-        var livroExistente = livroAux.get( )
-        livroExistente.titulo = livroExistente.titulo.lowercase()
 
-        if(livroRepository.existsByTitulo(livro.titulo)){
-            throw IllegalArgumentException("Titulo repetido")
-        }
-        if (livro.titulo.isBlank() && livro.descricao.isBlank()){
-            throw NoSuchElementException("Ambos os campos não podem ser vazios")
-        }
-        if(livro.titulo.isBlank()){
-            livroExistente.descricao = livro.descricao
-        }
-        if(livro.descricao.isBlank()){
+        if (livro.titulo.isNotBlank()) {
             livroExistente.titulo = livro.titulo
         }
-            livroRepository.save(livroExistente)
-            return livroExistente
+
+        if (livro.descricao.isNotBlank()) {
+            livroExistente.descricao = livro.descricao
+        }
+
+        if (livro.autores.isNotEmpty()) {
+            livroExistente.autores = livro.autores
+        }
+        return livroRepository.save(livroExistente)
     }
 }

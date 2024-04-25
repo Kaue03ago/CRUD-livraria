@@ -82,18 +82,7 @@ class LivroController(private val livroService: LivroService) {
                 }
             }
         }
-
-//        // Extrai os títulos dos livros do JSON
-//        val livros = response["docs"].map {
-//            Livro2(
-//                titulo = it["title"].asText(),
-//                autor = it["author_name"].map { autor -> autor.asText() }
-//            )
-//        }
-
-
         return ResponseEntity.ok(url.body)
-
     }
 
     @PutMapping("/editar/{id}")
