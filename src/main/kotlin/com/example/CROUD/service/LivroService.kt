@@ -17,12 +17,6 @@ class LivroService(@Valid
 ){
 
     fun inserirLivro(livro: livroDTO): Livro {
-//        livro.titulo = livro.titulo.lowercase()//transforma o titulo SEMPRE em minusculo
-//        if (livroRepository.existsByTitulo(livro.titulo)){
-//            throw IllegalArgumentException("Livro já cadastrado")
-//        }
-
-
         val livroApiExterna = openLibraryClient.searchBooks(livro.titulo)//busca o livro na api externa
         val livroApiInterna = livroModelFactory.createInstance(livroApiExterna)//cria um livro com os dados da api externa
 

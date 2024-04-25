@@ -37,13 +37,6 @@ class LivroController(private val livroService: LivroService) {
         return ResponseEntity(HttpStatus.OK)
     }
 
-//    @DeleteMapping("/deletarCategoria/{categoria}")
-//    fun removerCategoria(@PathVariable categoria: String): ResponseEntity<Void> {
-//        livroService.removerCategoria(categoria)
-//        return ResponseEntity(HttpStatus.OK)
-//    }
-
-
     @GetMapping("/listarTodosLivros")
     fun listarTodosLivros(): ResponseEntity<List<Livro>> {
         if (livroService.listarTodosLivros().isEmpty()) {

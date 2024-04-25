@@ -13,7 +13,6 @@ class LivroModelFactory : AbstractFactoryBean<Livro>() {
     }
 
     override fun createInstance(): Livro {
-//        Autor(null, emptyList())
         return (Livro(null, "", "",  emptyList()))
 
     }
@@ -25,7 +24,6 @@ class LivroModelFactory : AbstractFactoryBean<Livro>() {
         return this.createInstance().apply {
             titulo = livro.title.toString()
             descricao = livro.subtitle.toString()
-//            autor = livro.author?.map { it.toString() } ?: emptyList()
             this.autores = autores
         }
     }
