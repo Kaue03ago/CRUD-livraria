@@ -6,7 +6,9 @@ import com.example.CROUD.model.DTO.livroDTO
 import com.example.CROUD.model.Livro
 import com.example.CROUD.repository.LivroRepository
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 
 @Service
@@ -42,13 +44,13 @@ class LivroService(@Valid
 
     fun listarTodosLivros(): List<Livro>{
         if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
-            throw NoSuchElementException("Não há livros para listar")
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Não há livros para listar")
         }
         return livroRepository.findAll()
     }
 
     fun listarLivro(id: Long): Livro{
-        return livroRepository.findById(id).orElseThrow { NoSuchElementException("Livro não encontrado") }
+        return livroRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado") }
     }
 
     fun editarLivro(id: Long, livro: Livro): Livro? {
@@ -66,9 +68,9 @@ class LivroService(@Valid
             livroExistente.descricao = livro.descricao
         }
 
-        if (livro.autores.isNotEmpty()) {
-            livroExistente.autores = livro.autores
-        }
+//        if (livro.autores.isNotEmpty()) {
+//            livroExistente.autores = livro.autores
+//        }
         return livroRepository.save(livroExistente)
     }
 }

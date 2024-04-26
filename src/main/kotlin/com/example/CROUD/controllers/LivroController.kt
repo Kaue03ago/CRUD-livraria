@@ -51,32 +51,32 @@ class LivroController(private val livroService: LivroService) {
     }
 
 
-    @GetMapping("/listarLivroNome/{titulo}")
-    fun listarLivroNome(@PathVariable titulo: String): ResponseEntity<*>{
-        val restTemplate = RestTemplate()
-        val url = restTemplate.getForEntity<String>("https://openlibrary.org/search.json?q=${titulo.replace(" ", "+")}")
-
-        // Faz o parse do json retornado pela api usando o jackson
-        val objectMapper = ObjectMapper()
-        val response = objectMapper.readTree(url.body)
-
-
-
-        if (response != null && response.has("docs")) {
-            val docs = response["docs"]
-            if (docs.isArray && docs.size() > 0) {
-                val firstDoc = docs[0]
-                if (firstDoc.has("author_name")) {
-                    val authors = firstDoc["author_name"]
-                    if (authors.isArray && authors.size() > 0) {
-                        val author = authors[0].asText()
-                        return ResponseEntity.ok(author)
-                    }
-                }
-            }
-        }
-        return ResponseEntity.ok(url.body)
-    }
+//    @GetMapping("/listarLivroNome/{titulo}")
+//    fun listarLivroNome(@PathVariable titulo: String): ResponseEntity<*>{
+//        val restTemplate = RestTemplate()
+//        val url = restTemplate.getForEntity<String>("https://openlibrary.org/search.json?q=${titulo.replace(" ", "+")}")
+//
+//        // Faz o parse do json retornado pela api usando o jackson
+//        val objectMapper = ObjectMapper()
+//        val response = objectMapper.readTree(url.body)
+//
+//
+//
+//        if (response != null && response.has("docs")) {
+//            val docs = response["docs"]
+//            if (docs.isArray && docs.size() > 0) {
+//                val firstDoc = docs[0]
+//                if (firstDoc.has("author_name")) {
+//                    val authors = firstDoc["author_name"]
+//                    if (authors.isArray && authors.size() > 0) {
+//                        val author = authors[0].asText()
+//                        return ResponseEntity.ok(author)
+//                    }
+//                }
+//            }
+//        }
+//        return ResponseEntity.ok(url.body)
+//    }
 
     @PutMapping("/editar/{id}")
     fun editarLivro(@PathVariable id: Long, @RequestBody livro: Livro): ResponseEntity<Livro> {

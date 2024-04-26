@@ -29,17 +29,15 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly ("com.h2database:h2")
-	testImplementation("org.mockito:mockito-core:3.12.4")
-	testImplementation("org.mockito:mockito-core:5.11.0")
-	testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
-
-
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test:6.2.3")
 	implementation("io.mockk:mockk:1.12.0")
 	implementation("com.github.kittinunf.fuel:fuel:3.0.0-alpha1")
 	implementation ("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
 	implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
+	testImplementation("org.mockito:mockito-core:3.12.4")
+	testImplementation("org.mockito:mockito-core:5.11.0")
+	testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test:6.2.3")
 
 }
 

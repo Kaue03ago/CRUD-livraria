@@ -1,26 +1,37 @@
 package com.example.CROUD.controllers.LivroController
 
+import com.example.CROUD.model.Autor
+import com.example.CROUD.model.DTO.livroDTO
 import com.example.CROUD.model.Livro
-import com.example.CROUD.service.LivroService
+import com.example.CROUD.repository.LivroRepository
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.CoreMatchers.containsString
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.MediaType
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
+
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import java.awt.PageAttributes
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration
 @WithMockUser
+@ActiveProfiles
+
 
 
 
@@ -30,63 +41,82 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 class ControllerTest {
 
     @Autowired
-    private lateinit var mockMvc: MockMvc
+    private lateinit var mvc: MockMvc
 
-    @MockBean
-    private lateinit var livroService: LivroService
+    @Autowired
+    private lateinit var repository: LivroRepository
 
-//    @InjectMocks
-//    private lateinit var livroController: LivroController
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
 
-    @InjectMocks
-    private var id : Long = 100L
+    @BeforeEach
+    fun setup() = repository.deleteAll()
 
-    @InjectMocks
-    private var titulo : String = "livro de teste"
-
-    @InjectMocks
-    private var categoria : String = "comedia"
-
-    //@InjectMocks
-   private lateinit var livroAux: Livro//esta eh a forma correta ?
+    @AfterEach
+    fun tearDown() = repository.deleteAll()
 
 
     @Test
-    fun `inserir livro corretamente`(){
-         livroAux =Livro(id, titulo, categoria)
+    fun `listar todos corretamente`(){
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        repository.save(livroAux)
+//        val aux2 = repository.save(livroAux2)
 
-
-
-        `when`(livroService.inserirLivro(livroAux)).thenReturn(livroAux)
-
-        mockMvc.perform(
-            MockMvcRequestBuilders.post("/livraria/inserir")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": $id, "titulo": "$titulo", "categoria": "$categoria"}""")
-
-        )
-            .andExpect (MockMvcResultMatchers.status().isCreated)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.titulo").value(titulo))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value(categoria))
-
+        mvc.perform(get("/livraria/listarTodosLivros"))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$[0].id").value(livroAux.id))
+            .andExpect(jsonPath("$[0].titulo").value(livroAux.titulo))
+            .andExpect(jsonPath("$[0].descricao").value(livroAux.descricao))
     }
 
     @Test
-    fun `inserir livro incorretamente `(){
-        livroAux =Livro(id, titulo, categoria)
+    fun `listar todos erro, vazio`(){
+        repository.deleteAll()
+        mvc.perform(get("/livraria/listarTodosLivros"))
+            .andExpect(status().isNotFound)
+    }
 
+    @Test
+    fun `listar livro id`(){
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        repository.save(livroAux)
 
-        `when`(livroService.inserirLivro(livroAux)).thenReturn(livroAux)
+        mvc.perform(get("/livraria/listarLivro/{id}", 1))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.id").value(livroAux.id))
+            .andExpect(jsonPath("$.titulo").value(livroAux.titulo))
+            .andExpect(jsonPath("$.descricao").value(livroAux.descricao))
+    }
+    @Test
+    fun `listar livro id INCORRETO`(){
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        mvc.perform(get("/livraria/listarLivro/{id}", 77))
+            .andExpect(status().isNotFound)
+    }
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.post("/livraria/inserir")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"id": $id, "titulo: "", categoria": "$categoria" }""")
-        )
-            .andExpect(MockMvcResultMatchers.status().isBadRequest)//realmente deveria retornar bad request?
+    @Test
+    fun `deletar todos com sucesso`(){
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        var livroAux2  = Livro(2L, "teste titulo 2", "Teste descricao 2", null)
+        repository.saveAll(listOf(livroAux2, livroAux))
+
+        mvc.perform(delete("/livraria/deletarTodos"))
+            .andExpect(status().isOk)
+
+        val livros = repository.findAll()
+        assertThat(livros).isEmpty()
+
 
     }
+//    @Test
+//    fun `deletar todos com erro, estando vazio`() {
+//        `when`(repository.findAll()).thenReturn(emptyList())
+//        mvc.perform(delete("/livraria/deletarTodos")
+////            .contentType(PageAttributes.MediaType.APPLICATION_JSON_VALUE))
+////            .andExpect(status().isNotFound)
+//
+//    }
+
 
 
 }
