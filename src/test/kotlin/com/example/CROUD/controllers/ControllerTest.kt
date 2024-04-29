@@ -144,11 +144,8 @@ class ControllerTest {
     fun `deletar pelo id, n encontrando livro`() {
         repository.deleteById(1)
 
-
         mvc.perform(delete("/livraria/deletar/{id}", 1))
             .andExpect(status().isNotFound)
-//            .andExpect(jsonPath("$.message").value(errorMessage))
-
     }
 
     @Test
@@ -163,8 +160,6 @@ class ControllerTest {
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.titulo").value("titulo atualizado"))
             .andExpect(jsonPath("$.descricao").value("descricao atualizado"))
-
-
     }
 
     @Test
