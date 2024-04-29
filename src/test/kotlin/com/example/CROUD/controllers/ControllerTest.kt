@@ -170,18 +170,11 @@ class ControllerTest {
     @Test
     fun `editar livro inexistente`(){
 
-        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        val livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
 
         mvc.perform(put("/livraria/editar/{id}", 1)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(livroAux)))
             .andExpect(status().isNotFound)
-//            .andExpect(jsonPath("$.message")//.value(errorMessage))
-//
-//            .andExpect(jsonPath("$.titulo").value("titulo atualizado"))
-//            .andExpect(jsonPath("$.descricao").value("descricao atualizado"))
-
-
-
     }
 }
