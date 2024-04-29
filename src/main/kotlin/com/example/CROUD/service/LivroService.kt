@@ -30,34 +30,32 @@ class LivroService(@Valid
     }
     fun removerLivro(id: Long){
         if (!livroRepository.existsById(id)) {
-            throw NoSuchElementException("Livro não encontrado")
+//            throw NoSuchElementException("Livro não encontrado")
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
+
         }
         return livroRepository.deleteById(id)
     }
-
     fun removerTodosLivros(){
         if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
-            throw NoSuchElementException("Não há livros para deletar")
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Não há livros para deletar")
         }
         return livroRepository.deleteAll()
     }
-
-    fun listarTodosLivros(): List<Livro>{
-        if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Não há livros para listar")
-        }
+        fun listarTodosLivros(): List<Livro>{
+            if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
+                throw ResponseStatusException(HttpStatus.NOT_FOUND, "Não há livros para listar")
+            }
         return livroRepository.findAll()
     }
-
     fun listarLivro(id: Long): Livro{
         return livroRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado") }
     }
-
     fun editarLivro(id: Long, livro: Livro): Livro? {
         val livroExistente: Livro = livroRepository.findById(id).orElse(null) ?: return null
 
         if (livroRepository.existsByTituloAndIdNot(livro.titulo, id)) {
-            throw IllegalArgumentException("Título repetido")
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Título repetido")
         }
 
         if (livro.titulo.isNotBlank()) {

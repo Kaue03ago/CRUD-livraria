@@ -24,6 +24,9 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.awt.PageAttributes
+//import java.awt.PageAttributes.MediaType
+import org.springframework.http.MediaType
+
 
 
 @SpringBootTest
@@ -87,6 +90,7 @@ class ControllerTest {
             .andExpect(jsonPath("$.titulo").value(livroAux.titulo))
             .andExpect(jsonPath("$.descricao").value(livroAux.descricao))
     }
+
     @Test
     fun `listar livro id INCORRETO`(){
         var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
@@ -108,15 +112,76 @@ class ControllerTest {
 
 
     }
-//    @Test
-//    fun `deletar todos com erro, estando vazio`() {
-//        `when`(repository.findAll()).thenReturn(emptyList())
-//        mvc.perform(delete("/livraria/deletarTodos")
-////            .contentType(PageAttributes.MediaType.APPLICATION_JSON_VALUE))
-////            .andExpect(status().isNotFound)
+
+
+    @Test
+    fun `deletar todos livros, estando vazio`() {
+        val errorMessage = "Não há livros para deletar"
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        var livroAux2  = Livro(2L, "teste titulo 2", "Teste descricao 2", null)
+        repository.saveAll(listOf(livroAux2, livroAux))
+        repository.deleteAll()
+
+
+        mvc.perform(delete("/livraria/deletarTodos"))
+            .andExpect(status().isNotFound)
+            .andExpect(jsonPath("$.message").value(errorMessage))
+
+    }
+
+    @Test
+    fun`deletar pelo id `(){
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        repository.save(livroAux)
+        repository.deleteById(1)
+
+        val livroRemovido = repository.findById(1)
+        assertThat(livroRemovido).isEmpty
+
+    }
+
+    @Test
+    fun `deletar pelo id, n encontrando livro`() {
+        repository.deleteById(1)
+
+
+        mvc.perform(delete("/livraria/deletar/{id}", 1))
+            .andExpect(status().isNotFound)
+//            .andExpect(jsonPath("$.message").value(errorMessage))
+
+    }
+
+    @Test
+    fun `editar corretamente`(){
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+        var livroAux2  = Livro(1L, "titulo atualizado", "descricao atualizado", null)
+        repository.save(livroAux)
+
+        mvc.perform(put("/livraria/editar/{id}", 1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(livroAux2)))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.titulo").value("titulo atualizado"))
+            .andExpect(jsonPath("$.descricao").value("descricao atualizado"))
+
+
+    }
+
+    @Test
+    fun `editar livro inexistente`(){
+
+        var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
+
+        mvc.perform(put("/livraria/editar/{id}", 1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(livroAux)))
+            .andExpect(status().isNotFound)
+//            .andExpect(jsonPath("$.message")//.value(errorMessage))
 //
-//    }
+//            .andExpect(jsonPath("$.titulo").value("titulo atualizado"))
+//            .andExpect(jsonPath("$.descricao").value("descricao atualizado"))
 
 
 
+    }
 }
