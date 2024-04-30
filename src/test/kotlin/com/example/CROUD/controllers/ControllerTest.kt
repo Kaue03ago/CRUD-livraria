@@ -63,7 +63,6 @@ class ControllerTest {
     fun `listar todos corretamente`(){
         var livroAux  = Livro(1L, "teste titulo", "Teste descricao", null)
         repository.save(livroAux)
-//        val aux2 = repository.save(livroAux2)
 
         mvc.perform(get("/livraria/listarTodosLivros"))
             .andExpect(status().isOk)

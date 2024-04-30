@@ -12,8 +12,5 @@ data class livroDTO(
     @field: Size(min = 3, max = 75)
     val titulo: String,
     val descricao: String? = null,
-
-//    var autores: List<Autor>
-
     val autor: String? = null
 )

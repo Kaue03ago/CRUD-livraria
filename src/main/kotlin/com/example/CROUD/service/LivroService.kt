@@ -37,13 +37,13 @@ class LivroService(@Valid
         return livroRepository.deleteById(id)
     }
     fun removerTodosLivros(){
-        if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
+        if (livroRepository.findAll().isEmpty()){
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "Não há livros para deletar")
         }
         return livroRepository.deleteAll()
     }
         fun listarTodosLivros(): List<Livro>{
-            if (livroRepository.findAll().isEmpty()){//findall retorna uma lista de livros
+            if (livroRepository.findAll().isEmpty()){
                 throw ResponseStatusException(HttpStatus.NOT_FOUND, "Não há livros para listar")
             }
         return livroRepository.findAll()
