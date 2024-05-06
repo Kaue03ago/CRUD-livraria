@@ -13,7 +13,7 @@ class LivroModelFactory : AbstractFactoryBean<Livro>() {
     }
 
     override fun createInstance(): Livro {
-        return (Livro(null, "", 0.0,0,  "", emptyList(), emptyList()))
+        return (Livro(null, "", 0.0,0,  0, "", emptyList() , emptyList()))
 
     }
 
@@ -27,6 +27,7 @@ class LivroModelFactory : AbstractFactoryBean<Livro>() {
             this.autores = autores
             linguagens= livro.language
             anoPublicacao = livro.firstPublishYear
+            paginas = livro.publishDate
         }
     }
 }

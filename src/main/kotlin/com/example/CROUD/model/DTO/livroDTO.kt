@@ -15,5 +15,6 @@ data class livroDTO(
     val autor: String? = null,
     val valor: Double,
     val anoPublicacao: Int?,
+    val paginas: Int?,
     val linguagens: List<String>?
 )

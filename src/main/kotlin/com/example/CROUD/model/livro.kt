@@ -31,10 +31,14 @@ data class Livro(
     var anoPublicacao: Int?,
 
     @Column
+    var paginas: Int?,
+
+    @Column
     var descricao: String,
 
     @Column
     var linguagens: List<String>?,
+
 
 
     @OneToMany(cascade = [CascadeType.ALL])

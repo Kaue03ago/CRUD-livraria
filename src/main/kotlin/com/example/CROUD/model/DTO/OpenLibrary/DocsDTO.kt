@@ -11,5 +11,7 @@ data class DocsDTO (
     @JsonProperty("language")
     var language: List<String>? = null,
     @JsonProperty("first_publish_year")
-    var firstPublishYear: Int? = null
+    var firstPublishYear: Int? = null,
+    @JsonProperty("number_of_pages_median")
+    var publishDate: Int? = null
 )
