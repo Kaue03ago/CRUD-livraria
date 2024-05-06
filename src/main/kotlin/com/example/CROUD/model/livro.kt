@@ -18,16 +18,26 @@ data class Livro(
     @Column
     var titulo: String,
 
-  @Column
+
+
+//    @field: NotBlank
+//    @field: NotNull
+    @Column
+    var valor: Double?,
+
+//    @field: NotNull
+//    @field: NotBlank
+    @Column
+    var anoPublicacao: Int?,
+
+    @Column
     var descricao: String,
+
+    @Column
+    var linguagens: List<String>?,
 
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "livro_id")
-    var autores: List<Autor>?,
-
-//    @field: NotBlank
-    @field: NotNull
-    @Column
-    var valor: Double
+    var autores: List<Autor>?
 )

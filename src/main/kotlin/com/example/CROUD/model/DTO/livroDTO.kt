@@ -12,5 +12,8 @@ data class livroDTO(
     @field: Size(min = 3, max = 75)
     val titulo: String,
     val descricao: String? = null,
-    val autor: String? = null
+    val autor: String? = null,
+    val valor: Double,
+    val anoPublicacao: Int?,
+    val linguagens: List<String>?
 )

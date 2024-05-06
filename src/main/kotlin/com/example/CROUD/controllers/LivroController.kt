@@ -22,6 +22,7 @@ class LivroController(private val livroService: LivroService) {
 
     @PostMapping("/inserir")
     fun inserirLivro(@RequestBody @Valid livro: livroDTO): ResponseEntity<Livro> {//
+//        alterarTamanhoDescricao()
         return ResponseEntity(livroService.inserirLivro(livro), HttpStatus.CREATED)
     }
     @DeleteMapping("/deletar/{id}")

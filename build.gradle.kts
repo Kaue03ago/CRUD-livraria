@@ -38,6 +38,8 @@ dependencies {
 	testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test:6.2.3")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+
 
 }
 

@@ -9,14 +9,22 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.jdbc.core.JdbcTemplate
+
 
 
 @Service
 class LivroService(@Valid
                    private val livroRepository: LivroRepository,
                    val openLibraryClient: OpenLibraryClient,
-                   val livroModelFactory: LivroModelFactory
+                   val livroModelFactory: LivroModelFactory,
+                   private val jdbcTemplate: JdbcTemplate
 ){
+
+    fun alterarTamanhoDescricao() {
+        val sql = "ALTER TABLE livro ALTER COLUMN descricao VARCHAR(1000)"
+        jdbcTemplate.execute(sql)
+    }
 
     fun inserirLivro(livro: livroDTO): Livro {
         val livroApiExterna = openLibraryClient.searchBooks(livro.titulo)//busca o livro na api externa
@@ -25,6 +33,8 @@ class LivroService(@Valid
         if (livroRepository.existsByTitulo(livroApiInterna.titulo)){
             throw IllegalArgumentException("Livro já cadastrado")
         }
+//        livroApiInterna.anoPublicacao = livro.anoPublicacao
+        livroApiInterna.valor = livro.valor
         return livroRepository.save(livroApiInterna)
 
     }
