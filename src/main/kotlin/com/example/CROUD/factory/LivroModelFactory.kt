@@ -13,7 +13,7 @@ class LivroModelFactory : AbstractFactoryBean<Livro>() {
     }
 
     override fun createInstance(): Livro {
-        return (Livro(null, "", "",  emptyList()))
+        return (Livro(null, "", "",  emptyList(), 0.0))
 
     }
 
