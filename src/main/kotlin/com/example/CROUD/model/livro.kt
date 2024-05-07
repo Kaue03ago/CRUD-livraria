@@ -43,5 +43,21 @@ data class Livro(
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "livro_id")
-    var autores: List<Autor>?
+    var autores: List<Autor>?,
+
+    @field: NotNull
+    @Column
+    var peso: Double,
+
+    @field: NotNull
+    @Column
+    var altura: Double,
+
+    @field: NotNull
+    @Column
+    var largura: Double,
+
+    @field: NotNull
+    @Column
+    var profundidade: Double
 )

@@ -34,6 +34,11 @@ class LivroService(@Valid
             throw IllegalArgumentException("Livro já cadastrado")
         }
 //        livroApiInterna.anoPublicacao = livro.anoPublicacao
+        livroApiInterna.peso = livro.peso
+        livroApiInterna.altura = livro.altura
+        livroApiInterna.largura = livro.largura
+        livroApiInterna.profundidade = livro.profundidade
+
         livroApiInterna.valor = livro.valor
         return livroRepository.save(livroApiInterna)
 
