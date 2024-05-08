@@ -1,5 +1,6 @@
 package com.example.CROUD.controllers
 
+import com.example.CROUD.model.Autor
 import com.example.CROUD.model.DTO.livroDTO
 import com.example.CROUD.model.Livro
 import com.example.CROUD.service.LivroService
@@ -42,6 +43,24 @@ class LivroController(private val livroService: LivroService) {
         }
         return ResponseEntity(livroService.listarTodosLivros(), HttpStatus.OK)
     }
+
+    @GetMapping("/listarLivrosTitulo")
+    fun listarLivrosTitulo(): ResponseEntity<List<String>> {
+        if (livroService.listarLivrosTitulo().isEmpty()) {
+            return ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+        return ResponseEntity(livroService.listarLivrosTitulo(), HttpStatus.OK)
+    }
+
+//    @GetMapping("/listarTodosAutores")
+//    fun listarTodosAutores(): ResponseEntity<List<Autor>>{
+////        if (livroService.listarTodosAutores().isEmpty()){
+////            return ResponseEntity(HttpStatus.NO_CONTENT)
+////        }
+//        return ResponseEntity(livroService.listarTodosAutores(), HttpStatus.OK)
+//    }
+
+
     @GetMapping("/listarLivro/{id}")
     fun listarLivro(@PathVariable id: Long): ResponseEntity<Livro> {
         return ResponseEntity.ok(livroService.listarLivro(id))

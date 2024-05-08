@@ -13,5 +13,10 @@ data class DocsDTO (
     @JsonProperty("first_publish_year")
     var firstPublishYear: Int? = null,
     @JsonProperty("number_of_pages_median")
-    var publishDate: Int? = null
+    var publishDate: Int? = null,
+    @JsonProperty("subject")
+    var subject: List<String>? = null,
+    @JsonProperty("contributor")
+    var contributor: List<String>? = null
+
 )

@@ -14,7 +14,7 @@ data class Livro(
 
     @field: NotBlank
     @field: NotNull
-    @field: Size(min = 3, max = 75)
+    @field: Size(min = 2, max = 75)
     @Column
     var titulo: String,
 
@@ -37,13 +37,17 @@ data class Livro(
     var descricao: String,
 
     @Column
+    var generos: List<String>?,
+
+    @Column
     var linguagens: List<String>?,
-
-
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "livro_id")
     var autores: List<Autor>?,
+
+    @Column
+    var colaboradores: List<String>?,
 
     @field: NotNull
     @Column
