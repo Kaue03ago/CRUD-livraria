@@ -28,9 +28,9 @@ Está é uma implementação de um CRUD de uma livraria, onde possui resquest co
 ./gradlew build 
 ```
 #### 4- Por final execute pela sua IDE ou a seguinte linha de comando:
-
+``
 ./gradlew bootRun
-
+``
 
 #### 6- Abra o Postman para testar as funcionalidades 
 
