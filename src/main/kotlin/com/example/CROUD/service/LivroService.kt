@@ -66,8 +66,10 @@ class LivroService(@Valid
     }
     fun listarLivrosTitulo(): List<String>{
         val listLivros: List<Livro> = livroRepository.findAll()
-        val titulos: List<String> = listLivros.map { it.titulo }
-        return titulos
+        return listLivros.map { "id ${it.id }:  ${it.titulo}" }
+
+//        val titulos: List<String> = listLivros.map { it.id to it.titulo }
+//        return titulos
     }
 
 //    fun listarTodosAutores(): List<Autor> {
