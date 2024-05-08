@@ -21,12 +21,10 @@ data class Livro(
 
 
 //    @field: NotBlank
-//    @field: NotNull
+    @field: NotNull
     @Column
     var valor: Double?,
 
-//    @field: NotNull
-//    @field: NotBlank
     @Column
     var anoPublicacao: Int?,
 
