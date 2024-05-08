@@ -24,7 +24,7 @@ Está é uma implementação de um CRUD de uma livraria, onde possui resquest co
 ```
 
 #### 3- Em sua IDE ou terminal, execute o seguinte comando para construir o projeto:
-```http
+```
 ./gradlew build 
 ```
 #### 4- Por final execute pela sua IDE ou a seguinte linha de comando:
